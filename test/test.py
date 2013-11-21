@@ -21,12 +21,31 @@ class TestDistanceMatrixConstructor(unittest.TestCase):
             dmat = DistanceMatrix(f)
 
         self.assertEqual(dmat.n_nodes, 7)
+        self.assertEqual(set(dmat.closest()), set(('Monkey', 'Human')))
+        self.assertEqual(dmat.distance('Human', 'Moth'), 36.0)
+
+        first_obs = dmat.obs[0]
+        dmat.to_nodes()
+
+        self.assertEqual(dmat.n_nodes, 7)
+        self.assertEqual(first_obs, dmat.obs[0].id[0])
 
     def test_full_matrix(self):
         with open('bwa_cfg.dist', 'rb') as f:
             dmat = DistanceMatrix(f, full=True)
 
         self.assertEqual(dmat.n_nodes, 288)
+        self.assertEqual(set(dmat.closest()),
+                         set(('BWTGenerateOccValueFromBwt.00000000004030e0',
+                              'BWTIncConstruct.0000000000403a90')))
+        cl = dmat.closest()
+        self.assertEqual(dmat.distance(cl[0], cl[1]), 1.0)
+
+        first_obs = dmat.obs[0]
+        dmat.to_nodes()
+
+        self.assertEqual(dmat.n_nodes, 288)
+        self.assertEqual(first_obs, dmat.obs[0].id[0])
 
 class TestHierarchicalClustering(unittest.TestCase):
 
