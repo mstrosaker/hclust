@@ -28,7 +28,7 @@ setup(
         ],
 
     # All packages and sub-packages must be listed here
-    packages=[
+    py_modules=[
         'hclust',
         ],
 )
