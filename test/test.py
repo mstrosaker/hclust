@@ -11,7 +11,8 @@ try:
 except ImportError:
     import unittest
 
-sys.path.append("../hclust")
+#sys.path.append('..')
+sys.path.insert(0, '..')
 from hclust import DistanceMatrix, HClust
 
 class TestDistanceMatrixConstructor(unittest.TestCase):
@@ -65,12 +66,34 @@ class TestHierarchicalClustering(unittest.TestCase):
 
         cluster_list = hc.cut(5)
         self.assertEqual(len(cluster_list), 5)
+        self.assertTrue(('Dog',) in cluster_list)
+        self.assertTrue(('Moth',) in cluster_list)
+        self.assertTrue(('Tuna',) in cluster_list)
+        self.assertTrue(('Monkey',) not in cluster_list)
+        self.assertTrue(('Human',) not in cluster_list)
+        self.assertTrue(('Chicken',) not in cluster_list)
+        self.assertTrue(('Turtle',) not in cluster_list)
 
         cluster_list = hc.cut(10)
         self.assertEqual(len(cluster_list), 3)
+        self.assertTrue(('Dog',) not in cluster_list)
+        self.assertTrue(('Moth',) in cluster_list)
+        self.assertTrue(('Tuna',) in cluster_list)
+        self.assertTrue(('Monkey',) not in cluster_list)
+        self.assertTrue(('Human',) not in cluster_list)
+        self.assertTrue(('Chicken',) not in cluster_list)
+        self.assertTrue(('Turtle',) not in cluster_list)
 
         cluster_list = hc.cut(50)
         self.assertEqual(len(cluster_list), 1)
+        self.assertTrue(('Dog',) not in cluster_list)
+        self.assertTrue(('Moth',) not in cluster_list)
+        self.assertTrue(('Tuna',) not in cluster_list)
+        self.assertTrue(('Monkey',) not in cluster_list)
+        self.assertTrue(('Human',) not in cluster_list)
+        self.assertTrue(('Chicken',) not in cluster_list)
+        self.assertTrue(('Turtle',) not in cluster_list)
+        self.assertEqual(len(cluster_list[0]), 7)
 
     def test_number_clusters(self):
         with open('bwa_cfg.dist', 'rb') as f:
@@ -86,7 +109,6 @@ class TestHierarchicalClustering(unittest.TestCase):
 
         cluster_list = hc.n_clusters(1)
         self.assertEqual(len(cluster_list), 1)
-
 
 
 if __name__ == '__main__':
